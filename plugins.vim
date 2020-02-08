@@ -33,15 +33,61 @@ call plug#begin(g:PLUGIN_HOME)
 " Show contents of registers when typing " or @ or <Ctrl-R>
 Plug 'junegunn/vim-peekaboo'
 
+" Suround things with ys
+Plug 'tpope/vim-surround'
 
-Plug 'junegunn/limelight.vim'
-Plug 'junegunn/goyo.vim'
+" Create comments on multiple lines with gc 
+Plug 'tpope/vim-commentary'
+
+" Tags
+Plug 'ludovicchabant/vim-gutentags', { 'for' : ['tex', 'latex', 'haskell', 'c', 'cpp', 'rust', 'python'] }
 
 " Tagbar 
 Plug 'liuchengxu/vista.vim'
 
+" Undotree
+Plug 'mbbill/undotree'
+
+" Filesystem view
+Plug 'scrooloose/nerdtree'
+
+" Auto completion (--system-libclang for archlinux)
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --system-libclang', 'frozen' : 1 }
+
+Plug 'junegunn/fzf.vim'
+
+" Snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'ervandew/supertab'
+
+" Syntax checking
+Plug 'w0rp/ale'
+
+" Git
+Plug 'tpope/vim-fugitive'
+
+" Auto close delimiters
+Plug 'Raimondi/delimitMate'
+
+" Focus
+Plug 'junegunn/limelight.vim'
+Plug 'junegunn/goyo.vim'
+
+" Start screen
+Plug 'mhinz/vim-startify'
+Plug 'ryanoasis/vim-devicons'
+
+" Fancy ruler
+Plug 'powerline/powerline'
+
 " Easy alignment
 Plug 'junegunn/vim-easy-align'
+
+" Colorschemes
+Plug 'altercation/vim-colors-solarized'
+
+"{{ Programming
 
 " Add movements for CamelCase and _ (underscore)
 " useful for programming
@@ -52,7 +98,40 @@ Plug 'KeitaNakamura/highlighter.nvim', {'for': ['python', 'cpp']}
 
 Plug 'tweekmonster/braceless.vim', {'for': ['python']}
 
+" C++
+"highlights std:: and similar stuff
+Plug 'bfrg/vim-cpp-modern', { 'for' : ['c', 'cpp'] }
+
+" Haskell
+Plug 'neovimhaskell/haskell-vim', { 'for' : ['haskell'] }
+Plug 'alx741/vim-hindent', { 'for' : ['haskell'] }
+
+" Rust
+Plug 'rust-lang/rust.vim', { 'for' : ['rust'] }
+
+" LaTeX
+Plug 'lervag/vimtex', { 'for' : ['tex', 'latex'] }
+Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
+
+" Python
+Plug 'tmhedberg/SimpylFold', { 'for' : ['python'] }
+
+" R
+Plug 'jalvesaq/Nvim-R'
+"}}
+
+" get . (dot) for plugin mappings
+Plug 'tpope/vim-repeat'
+
+" mostly for [l, ]l for :lnext
+Plug 'tpope/vim-unimpaired'
+
+" plug#end implicitly calls the following:
+"  -> filetype plugin indent on
+"  -> syntax enable
+" DO NOT set these again, it may override system settings
 call plug#end()
+
 "}
 
 autocmd FileType python BracelessEnable +indent +fold +highlight
@@ -63,6 +142,11 @@ map <silent> w <Plug>CamelCaseMotion_w
 " Toggle Limelight on Goyo
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
+
+
+let g:SimpylFold_docstring_preview = 1
+
+let g:indent_guides_enable_on_vim_startup = 1
 
 " Fzf
 nnoremap <Tab> :Buffers <CR>
@@ -81,6 +165,96 @@ nmap ga <Plug>(EasyAlign)
 let g:highlighter#auto_update = 2
 
 
+"{{ YCM
+
+" most of these settings comply to the default
+
+" show ui at the bottom with diagnostics (error,warnings,...)
+let g:ycm_show_diagnostics_ui = 1
+" symbols
+let g:ycm_error_symbol = '>>'
+let g:ycm_warning_symbol = '>>'
+" show icons in vim's gutter
+let g:ycm_enable_diagnostic_signs = 1
+" highlight diagnostics in current line
+let g:ycm_enable_diagnostic_highlighting = 1
+" echo current diagnostic message at the bottom
+let g:ycm_echo_current_diagnostic = 1
+" collect identifiers from ctags - use Exuberant Ctags with --fields=+l
+let g:ycm_collect_identifiers_from_tags_files = 1
+" use keywords of the programming language for completion
+let g:ycm_seed_identifiers_with_syntax = 0
+" every .ycm_extra_conf.py file in home directory can be trusted (can it?)
+let g:ycm_extra_conf_globlist = ['~/*']
+" limit suggestions to 8 entries (does *not* include identifier suggestions)
+let g:ycm_max_num_candidates = 8
+" limit suggestions from the identifier based engine to 8 (does not include semantic suggestions)
+let g:ycm_max_num_identifier_candidates = 8
+" activate ycm for the following filetypes
+let g:ycm_filetype_whitelist = {'*': 1}
+let g:ycm_filetype_blacklist = {
+	\ 'tagbar': 1,
+	\ 'notes': 1,
+	\ 'markdown': 1,
+	\ 'netrw': 1,
+	\ 'unite': 1,
+	\ 'text': 1,
+	\ 'vimwiki': 1,
+	\ 'pandoc': 1,
+	\ 'infolog': 1,
+	\ 'mail': 1 }
+" dont spam the location list
+let g:ycm_always_populate_location_list = 0
+" close preview (*not* split view) after leaving insert mode 
+let g:ycm_autoclose_preview_window_after_completion = 1
+" let g:ycm_autoclose_preview_window_after_insertion = 1
+" close suggestions view with <C-y>
+let g:ycm_key_list_stop_completion = ['<C-y>']
+let g:ycm_key_invoke_completion = ''
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Tab>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<s-Tab>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<C-Space>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" YCM vim support
+if !exists('g:ycm_semantic_triggers')
+	let g:ycm_semantic_triggers = {}
+endif
+au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
+
+" let g:UltiSnipsExpandTrigger='<c-k>'
+" let g:UltiSnipsJumpForwardTrigger='<c-k>'
+" let g:UltiSnipsJumpBackwardTrigger='<c-s-k>'
+" let plugDir='/home/max/.vim/bundle'
+" let g:UltiSnipsSnippetsDir=plugDir.'/vim-snippets/UltiSnips'
+
+"}}
+
+let g:vimtex_compiler_method='latexmk'
+let g:tex_flavor='xelatex'
+" let g:vimtex_compiler_latexmk='-pdfxe'
+set conceallevel=2
+let g:tex_conceal='abdmg'
+let g:tex_comment_nospell=1
+
+"{{ ALE
+let g:ale_sign_column_always = 1
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+let g:ale_open_list = 1
+" do not continuously check the file
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 1
+" use quickfix instead of loclist
+" Note: this does spam the quickfix list alot
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+
 augroup Latex
   " When linting is costly in LaTeX, only perform it in normal mode
   autocmd Filetype tex call SetLatexLintingOptions()
@@ -90,6 +264,4 @@ augroup Latex
     let g:ale_lint_on_enter = 0
   endfunction
 augroup END
-
-
-
+"}}
