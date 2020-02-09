@@ -122,6 +122,7 @@ set matchtime=4
 
 " show command in status line.
 set showcmd
+set noshowmode
 
 " line numbers
 " set relativenumber " relative to current line (slow)

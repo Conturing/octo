@@ -42,10 +42,10 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 
 " Tags
-Plug 'ludovicchabant/vim-gutentags', { 'for' : ['tex', 'latex', 'haskell', 'c', 'cpp', 'rust', 'python'] }
+Plug 'ludovicchabant/vim-gutentags', { 'for' : ['tex', 'latex', 'haskell', 'c', 'cpp', 'rust', 'python', 'java'] }
 
 " Tagbar 
-Plug 'liuchengxu/vista.vim'
+Plug 'liuchengxu/vista.vim', { 'for' : ['tex', 'latex', 'haskell', 'c', 'cpp', 'rust', 'python', 'java'] }
 
 " Undotree
 Plug 'mbbill/undotree'
@@ -81,13 +81,25 @@ Plug 'mhinz/vim-startify'
 Plug 'ryanoasis/vim-devicons'
 
 " Fancy ruler
-Plug 'powerline/powerline'
+" Plug 'vim-airline/vim-airline'
+Plug 'itchyny/lightline.vim'
 
 " Easy alignment
 Plug 'junegunn/vim-easy-align'
 
+
 " Colorschemes
-Plug 'altercation/vim-colors-solarized'
+" Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
+
+" Improve vim incsearch, clear search highlight automatically
+Plug 'haya14busa/is.vim'
+" Plug 'PeterRincker/vim-searchlight'
+
+" Stay after pressing * and search selected text
+Plug 'haya14busa/vim-asterisk'
+
+Plug 'terryma/vim-multiple-cursors'
 
 "{{ Programming
 
@@ -97,8 +109,6 @@ Plug 'bkad/CamelCaseMotion', {'for': ['java', 'cpp', 'rust']}
 
 " Testing this one, maybe too much?
 Plug 'KeitaNakamura/highlighter.nvim', {'for': ['python', 'cpp']}
-
-Plug 'tweekmonster/braceless.vim', {'for': ['python']}
 
 " C++
 "highlights std:: and similar stuff
@@ -117,9 +127,11 @@ Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
 
 " Python
 Plug 'tmhedberg/SimpylFold', { 'for' : ['python'] }
+Plug 'davidhalter/jedi-vim', {'for': ['python'] }
+Plug 'tweekmonster/braceless.vim', {'for': ['python']}
 
 " R
-Plug 'jalvesaq/Nvim-R'
+Plug 'jalvesaq/Nvim-R', {'for': 'r'}
 "}}
 
 " get . (dot) for plugin mappings
@@ -146,6 +158,7 @@ autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 
 let g:limelight_conceal_ctermfg = '10'
+let g:limelight_paragraph_span = 1
 
 let g:SimpylFold_docstring_preview = 1
 
@@ -269,3 +282,53 @@ augroup Latex
   endfunction
 augroup END
 "}}
+
+"{{ Vista
+" Enable the display of icons in the Vista interface
+let g:vista#renderer#enable_icon = 1
+
+" How each level is indented and what to prepend.
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+
+" Configure how Vista shows a location when navigating its interface
+let g:vista_echo_cursor_strategy = 'echo'
+
+" Allow Vista to create data for display in the lightline (TODO)
+let g:vista_disable_statusline = 0
+
+" Define icon mappings for the cases when the defaults do not match
+" Note that Vista defines "class" and "method" but not the plural
+" Summary of the icon definitions:
+" --> Java: classes, methods
+" --> LaTeX: labels, sections, subsections, subsubsections
+" --> VimScript: autocommand groups, commands, maps
+" --> Default: use a box with a circle instead of question mark
+let g:vista#renderer#icons = {
+\   'S': "\uf7fd",
+\   'c': "\uf7fd",
+\   's': "\uf7fd",
+\   'autocommand groups': "\uf136",
+\   'classes': "\uf0e8",
+\   'commands': "\uf8a3",
+\   'labels': "\uf71b",
+\   'maps': "\uf8a3",
+\   'methods': "\uf6a6",
+\   'sections': "\uf7fd",
+\   'subsections': "\uf7fd",
+\   'subsubsections': "\uf7fd",
+\   'default': "\uf7fd",
+\  }
+"}}
+
+""""""""""""""""""""""""""""is.vim settings"""""""""""""""""""""""
+" To make is.vim work together well with vim-anzu and put current match in
+" the center of the window.
+" `zz`: put cursor line in center of the window.
+" `zv`: open a fold to reveal the text when cursor step into it.
+nmap n <Plug>(is-n)zt
+nmap N <Plug>(is-N)zt
+
+map *  <Plug>(asterisk-z*)<Plug>(is-nohl-1)
+map g* <Plug>(asterisk-gz*)<Plug>(is-nohl-1)
+map #  <Plug>(asterisk-z#)<Plug>(is-nohl-1)
+map g# <Plug>(asterisk-gz#)<Plug>(is-nohl-1)

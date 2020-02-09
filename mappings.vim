@@ -61,8 +61,8 @@ command! Wq wq
 command! W w
 
 " Search will center on the line it's found in
-nnoremap N Nzz
-nnoremap n nzz
+" nnoremap N Nzz
+" nnoremap n nzz
 
 " Correct spelling mistakes with Ctrl-L
 inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u

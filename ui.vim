@@ -32,22 +32,28 @@ endif
 
 "set background=dark
 
+set termguicolors
+
 " reminder to keep characters per line to a sane value
 "set colorcolumn=140
 "highlight ColorColumn ctermbg=darkgray
 
 " highlight cursor (slow-ish?)
 set cursorline
-set fillchars+=vert:\ 
+set fillchars+=vert:│
 
 function! ColumnLayout() abort
-	highlight CursorLine cterm=none ctermbg=black guibg=darkred
-	highlight CursorLineNR cterm=bold ctermbg=black ctermfg=14
+	highlight clear CursorLine
+	highlight CursorLine cterm=none ctermbg=8 guibg=8
+	highlight clear CursorLineNR
+	highlight CursorLineNR cterm=bold ctermbg=0 ctermfg=14 guibg=0 guifg=14
 
 	" use the same color for gutter
-	highlight SignColumn cterm=none ctermbg=8
+	highlight clear SignColumn
+	highlight SignColumn cterm=none ctermbg=8 guibg=8
 
-	highlight VertSplit ctermbg=0
+	highlight clear VertSplit
+	highlight VertSplit ctermbg=0 guibg=0
 endfunction
 
 augroup AutoHiColumn
@@ -57,6 +63,6 @@ augroup END
 
 
 try
-	colorscheme solarized
+	colorscheme solarized8
 catch
 endtry
