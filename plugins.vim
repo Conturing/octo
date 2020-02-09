@@ -28,6 +28,8 @@ let g:PLUGIN_HOME=expand(g:nvim_config_root . '/plugged')
 " let g:PLUGIN_HOME=expand(stdpath('data') . '/plugged')
 "}}
 
+let g:ale_sign_highlight_liners = 1
+
 call plug#begin(g:PLUGIN_HOME)
 
 " Show contents of registers when typing " or @ or <Ctrl-R>
@@ -143,6 +145,7 @@ map <silent> w <Plug>CamelCaseMotion_w
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 
+let g:limelight_conceal_ctermfg = '10'
 
 let g:SimpylFold_docstring_preview = 1
 
@@ -153,7 +156,7 @@ nnoremap <Tab> :Buffers <CR>
 
 " Navigate to the next linting warning/error
 nmap <silent> <C-k> <Plug>(ale_previous)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)zt
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -250,6 +253,7 @@ let g:ale_open_list = 1
 " do not continuously check the file
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_enter = 1
+let g:ale_list_window_size = 7
 " use quickfix instead of loclist
 " Note: this does spam the quickfix list alot
 let g:ale_set_loclist = 0
@@ -261,7 +265,7 @@ augroup Latex
   function! SetLatexLintingOptions()
     let g:ale_lint_on_text_changed = 'normal'
     let g:ale_lint_delay = 500
-    let g:ale_lint_on_enter = 0
+    let g:ale_lint_on_enter = 1
   endfunction
 augroup END
 "}}

@@ -5,13 +5,13 @@
 
 function! MySpellingHighlights() abort
 	highlight clear SpellBad
-	highlight SpellBad cterm=underline ctermfg=red
+	highlight SpellBad cterm=undercurl ctermfg=red
 	highlight clear SpellRare
-	highlight SpellRare cterm=underline
+	highlight SpellRare cterm=underline ctermbg=0
 	highlight clear SpellCap
-	highlight SpellCap cterm=underline
+	highlight SpellCap cterm=underline ctermbg=0
 	highlight clear SpellLocal
-	highlight SpellLocal cterm=underline
+	highlight SpellLocal cterm=underline ctermbg=0
 endfunction
 
 augroup AutoHiSpelling
@@ -31,19 +31,32 @@ endif
 "set t_Co=256
 
 "set background=dark
-try
-	colorscheme solarized
-catch
-endtry
 
 " reminder to keep characters per line to a sane value
 "set colorcolumn=140
 "highlight ColorColumn ctermbg=darkgray
 
-" highlight cursor (slow)
-" set cursorline
-highlight CursorLine cterm=none ctermbg=black guibg=darkred
+" highlight cursor (slow-ish?)
+set cursorline
+set fillchars+=vert:\ 
+
+function! ColumnLayout() abort
+	highlight CursorLine cterm=none ctermbg=black guibg=darkred
+	highlight CursorLineNR cterm=bold ctermbg=black ctermfg=14
+
+	" use the same color for gutter
+	highlight SignColumn cterm=none ctermbg=8
+
+	highlight VertSplit ctermbg=0
+endfunction
+
+augroup AutoHiColumn
+	autocmd!
+	autocmd ColorScheme * call ColumnLayout()
+augroup END
 
 
-" use the same color for gutter
-highlight clear SignColumn
+try
+	colorscheme solarized
+catch
+endtry
