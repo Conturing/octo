@@ -1,5 +1,5 @@
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "        _   _       _                  _____             __ _               "
 "       | \ | |     (_)                / ____|           / _(_)              "
 "       |  \| |_   ___ _ __ ___       | |     ___  _ __ | |_ _  __ _         "
@@ -22,7 +22,7 @@
 
 "{{ License: MIT License
 "
-" Copyright (c) 2018 Jie-dong Hao
+" Copyright (c) 2020
 "
 " Permission is hereby granted, free of charge, to any person obtaining a copy
 " of this software and associated documentation files (the "Software"), to
@@ -65,9 +65,7 @@ for s:fname in g:config_file_list
 endfor
 "}
 
-"{ A list of resources which inspire me
-" This list is non-exhaustive as I can not remember the source of many
-" settings.
+"{ List of related resources 
 " - https://github.com/jdhao/nvim-config
 " - https://github.com/gkapfham/dotfiles/blob/master/.vimrc
 " - https://castel.dev/post/lecture-notes-1/
