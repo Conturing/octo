@@ -106,9 +106,9 @@ Plug 'terryma/vim-multiple-cursors'
 
 Plug 'tpope/vim-abolish'
 
-Plug 'reedes/vim-pencil', { 'for': ['tex', 'mardown', 'text'] }
+Plug 'reedes/vim-pencil', { 'for': ['tex', 'markdown', 'text'] }
 
-Plug 'dpelle/vim-LanguageTool', { 'for': ['tex', 'mardown', 'text'] }
+Plug 'dpelle/vim-LanguageTool', { 'for': ['tex', 'markdown', 'text'] }
 
 "}}
 
@@ -144,6 +144,10 @@ Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
 Plug 'tmhedberg/SimpylFold', { 'for' : ['python'] }
 Plug 'davidhalter/jedi-vim', {'for': ['python'] }
 Plug 'tweekmonster/braceless.vim', {'for': ['python']}
+
+" Markdown
+Plug 'gabrielelana/vim-markdown'
+Plug 'vim-pandoc/vim-pandoc'
 
 " R
 Plug 'jalvesaq/Nvim-R', {'for': 'r'}
