@@ -4,14 +4,14 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function! MySpellingHighlights() abort
-	highlight clear SpellBad
-	highlight SpellBad cterm=undercurl ctermfg=red
-	highlight clear SpellRare
-	highlight SpellRare cterm=underline ctermbg=0
-	highlight clear SpellCap
-	highlight SpellCap cterm=underline ctermbg=0
-	highlight clear SpellLocal
-	highlight SpellLocal cterm=underline ctermbg=0
+	" highlight clear SpellBad
+	" highlight SpellBad cterm=undercurl ctermfg=red guisp=undercurl guifg=red
+	" highlight clear SpellRare
+	" highlight SpellRare cterm=underline ctermbg=0 guisp=underline guibg=0
+	" highlight clear SpellCap
+	" highlight SpellCap cterm=undercurl ctermbg=0 guisp=undercurl guibg=0
+	" highlight clear SpellLocal
+	" highlight SpellLocal cterm=underline ctermbg=0 guisp=underline guibg=0
 endfunction
 
 augroup AutoHiSpelling
@@ -33,6 +33,7 @@ endif
 "set background=dark
 
 set termguicolors
+set guifont=FiraCode\ 16
 
 " reminder to keep characters per line to a sane value
 "set colorcolumn=140
@@ -41,6 +42,7 @@ set termguicolors
 " highlight cursor (slow-ish?)
 set cursorline
 set fillchars+=vert:│
+
 
 function! ColumnLayout() abort
 	highlight clear CursorLine

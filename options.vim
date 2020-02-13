@@ -239,11 +239,13 @@ set undolevels=5000
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 	
 " set spelllang=hun-de-DE-frami,en
-set spelllang=en
+set spelllang=en,de
 
 let &spellfile=expand(g:nvim_config_root.'/spell/en-de.utf-8.add')
 
 if &diff
 	set nospell
 endif
+
+set diffopt+=vertical
 

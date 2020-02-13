@@ -101,11 +101,25 @@ Plug 'haya14busa/vim-asterisk'
 
 Plug 'terryma/vim-multiple-cursors'
 
+"{{ Prose
+
+Plug 'tpope/vim-abolish'
+
+Plug 'reedes/vim-pencil', { 'for': ['tex', 'mardown', 'text'] }
+
+Plug 'dpelle/vim-LanguageTool', { 'for': ['tex', 'mardown', 'text'] }
+
+"}}
+
+
 "{{ Programming
 
 " Add movements for CamelCase and _ (underscore)
 " useful for programming
 Plug 'bkad/CamelCaseMotion', {'for': ['java', 'cpp', 'rust']}
+
+" extends %
+Plug 'andymass/vim-matchup'
 
 " Testing this one, maybe too much?
 Plug 'KeitaNakamura/highlighter.nvim', {'for': ['python', 'cpp']}
