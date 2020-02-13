@@ -42,7 +42,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 
 " Tags
-Plug 'ludovicchabant/vim-gutentags', { 'for' : ['tex', 'latex', 'haskell', 'c', 'cpp', 'rust', 'python', 'java'] }
+Plug 'ludovicchabant/vim-gutentags'
+" Plug 'ludovicchabant/vim-gutentags', { 'for' : ['tex', 'latex', 'haskell', 'c', 'cpp', 'rust', 'python', 'java'] }
 
 " Tagbar 
 Plug 'liuchengxu/vista.vim', { 'for' : ['tex', 'latex', 'haskell', 'c', 'cpp', 'rust', 'python', 'java'] }
@@ -195,7 +196,7 @@ nmap ga <Plug>(EasyAlign)
 let g:highlighter#auto_update = 2
 
 
-"{{ YCM
+"{{{ YCM
 
 " most of these settings comply to the default
 
@@ -263,7 +264,7 @@ au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
 " let plugDir='/home/max/.vim/bundle'
 " let g:UltiSnipsSnippetsDir=plugDir.'/vim-snippets/UltiSnips'
 
-"}}
+"}}}
 
 let g:vimtex_compiler_method='latexmk'
 let g:tex_flavor='xelatex'
@@ -272,10 +273,10 @@ set conceallevel=2
 let g:tex_conceal='abdmg'
 let g:tex_comment_nospell=1
 
-"{{ ALE
+"{{{ ALE
 let g:ale_sign_column_always = 1
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
+let g:ale_sign_warning = '▲'
+let g:ale_sign_error = '✗'
 let g:ale_open_list = 1
 " do not continuously check the file
 let g:ale_lint_on_text_changed = 'never'
@@ -295,9 +296,9 @@ augroup Latex
     let g:ale_lint_on_enter = 1
   endfunction
 augroup END
-"}}
+"}}}
 
-"{{ Vista
+"{{{ Vista
 " Enable the display of icons in the Vista interface
 let g:vista#renderer#enable_icon = 1
 
@@ -332,7 +333,7 @@ let g:vista#renderer#icons = {
 \   'subsubsections': "\uf7fd",
 \   'default': "\uf7fd",
 \  }
-"}}
+"}}}
 
 """"""""""""""""""""""""""""is.vim settings"""""""""""""""""""""""
 " To make is.vim work together well with vim-anzu and put current match in
@@ -346,3 +347,154 @@ map *  <Plug>(asterisk-z*)<Plug>(is-nohl-1)
 map g* <Plug>(asterisk-gz*)<Plug>(is-nohl-1)
 map #  <Plug>(asterisk-z#)<Plug>(is-nohl-1)
 map g# <Plug>(asterisk-gz#)<Plug>(is-nohl-1)
+
+
+" Force Jedi to use version 3
+let g:jedi#force_py_version = 3
+
+" Disable jedi-vim auto-completion and enable call-signatures options
+let g:jedi#auto_initialization = 0
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#completions_command = ''
+let g:jedi#completions_enabled = 0
+let g:jedi#popup_on_dot = 0
+let g:jedi#show_call_signatures = '1'
+let g:jedi#smart_auto_mappings = 0
+
+
+
+" Lightline for Status Line and Buffer Line {{{
+
+" Always display the tabline so that lightline buffers can override
+set showtabline=2
+
+" Display icons in lightline buffer at screen top
+let g:lightline#bufferline#enable_devicons = 1
+
+" Do not shorten the path of a buffer
+let g:lightline#bufferline#shorten_path = 1
+
+" Do not show the buffer, as :b num nav not needed
+let g:lightline#bufferline#show_number = 0
+
+" Define a name of 'No Name' buffer
+let g:lightline#bufferline#unnamed = '*'
+
+" Configure the lightline according to documentation and examples from statico/dotfiles
+let g:lightline = {
+      \ 'colorscheme': 'solarized',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'spell', 'paste' ],
+      \             [ 'fugitive', 'readonly', 'filename', 'context', 'modified' ] ],
+      \   'right': [['lineinfo'], ['percent'], ['linter_warnings', 'linter_errors', 'linter_ok', 'fileformat', 'fileencoding', 'filetype'], ['gutentags']]
+      \ },
+      \ 'component_function': {
+      \   'readonly': 'LightlineReadonly',
+      \   'fugitive': 'LightlineFugitive',
+      \   'spell': 'LightlineSpell',
+      \   'filetype': 'LightlineFiletype',
+      \   'fileformat': 'LightlineFileformat',
+      \   'filename': 'LightlineFilename',
+      \   'gutentags': 'LightlineGutentags',
+      \   'linter_warnings': 'LightlineLinterWarnings',
+      \   'linter_errors': 'LightlineLinterErrors',
+      \   'linter_ok': 'LightlineLinterOK',
+      \   'context': 'NearestMethodOrFunction'
+      \ },
+      \ 'component_type': {
+      \   'readonly': 'error',
+      \   'linter_warnings': 'warning',
+      \   'linter_errors': 'error'
+      \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' }
+\ }
+
+" Ensure that the lightline status bar updates
+augroup GutentagsStatusLineRefresher
+  autocmd!
+  autocmd User GutentagsUpdating call lightline#update()
+  autocmd User GutentagsUpdated call lightline#update()
+augroup END
+
+" Display a diagnostic message when gutentags updates
+function! LightlineGutentags()
+  return gutentags#statusline() !=# '' ? '  Tags ' : 'Tags '
+endfunction
+
+" Display a lock symbol if the file is read-only (e.g., help files)
+function! LightlineReadonly()
+  return &readonly ? '' : ''
+endfunction
+
+" Display symbols, not dictionaries, to indicate that spell-checking runs
+function! LightlineSpell()
+  return &spell ? 'A-Z✔ ' : ''
+endfunction
+
+" Display file name with symbol or '*' for 'No Name'
+function! LightlineFilename()
+  return '' !=# expand('%:t') ? ' '.expand('%:t') : ' *'
+endfunction
+
+" Display the name of the branch with a specialize symbol
+function! LightlineFugitive()
+  if exists('*fugitive#head')
+    let l:branch = fugitive#head()
+    return l:branch !=# '' ? ' שׂ '.l:branch : ''
+  endif
+  return ''
+endfunction
+
+" Detect and display the file type, using a dev-icon
+function! LightlineFiletype()
+  return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() . ' ' : 'no ft ') : ''
+endfunction
+
+" Detect and display the file format, using a dev-icon
+function! LightLineFileformat()
+  return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) . ' ' : ''
+endfunction
+
+" Collect, count, and display the linter warnings from ale
+function! LightlineLinterWarnings() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '' : printf('%d ', l:all_non_errors)
+endfunction
+
+" Collect, count, and display the linter errors from ale
+function! LightlineLinterErrors() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '' : printf('%d ', l:all_errors)
+endfunction
+
+" Since there are no warnings or errors, display a zero count
+function! LightlineLinterOK() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+  return l:counts.total == 0 ? '0   0 ' : ''
+endfunction
+
+" Update and show lightline but only if it's visible
+function! s:MaybeUpdateLightline()
+  if exists('#lightline')
+    call lightline#update()
+  end
+endfunction
+
+" Update the lightline linting errors if it is enabled
+augroup alecallconfiguration
+  autocmd User ALELint call s:MaybeUpdateLightline()
+augroup END
+
+" Configure the lightline buffer listing at top of the screen
+let g:lightline.tabline          = {'left': [['buffers']], 'right': [['bufnum']]}
+let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
+let g:lightline.component_type   = {'buffers': 'tabsel'}
+
+" }}}
